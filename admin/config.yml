@@ -1,0 +1,19 @@
+backend:
+  name: Hiroja
+  repo: hiroja-boosting-site # Change this to your actual repo name
+  branch: main
+
+media_folder: "images" # Where your uploaded photos will go
+public_folder: "images"
+
+collections:
+  - name: "services"
+    label: "Boosting Services"
+    files:
+      - name: "pricing"
+        label: "Pricing & Services"
+        file: "index.html" # We are telling it to edit your main page
+        fields:
+          - { label: X Price, name: "title", widget: "string" }
+          - { label: "FB Price", name: "fb_price", widget: "string" }
+          - { label: "IG Price", name: "ig_price", widget: "string" }
