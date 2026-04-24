@@ -3,57 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Anniversary!</title>
+    <title>Our Special Day</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff5f7; color: #d63384; text-align: center; margin: 0; padding: 20px; }
-        .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); max-width: 500px; margin: 50px auto; }
-        h1 { font-size: 2rem; }
-        p { font-size: 1.1rem; color: #555; }
-        .photo-placeholder { width: 100%; height: 250px; background: #eee; border-radius: 15px; margin: 20px 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .photo-placeholder img { width: 100%; height: 100%; object-fit: cover; }
+        body { font-family: 'Inter', sans-serif; background: #fff5f7; color: #d63384; text-align: center; margin: 0; padding: 20px; }
+        .container { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); max-width: 500px; margin: 50px auto; position: relative; }
+        h1 { font-size: 2.2rem; outline: none; }
+        p { font-size: 1.1rem; color: #555; outline: none; }
+        .photo-placeholder { width: 100%; height: 250px; background: #ffebee; border-radius: 15px; margin: 20px 0; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px dashed #ffc107; }
         .buttons { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
-        button { padding: 15px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button { padding: 15px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
         .btn-yes { background: #d63384; color: white; }
-        .btn-yes:hover { transform: scale(1.1); background: #b02a6b; }
-        .btn-no { background: #f8d7da; color: #721c24; }
-        #message { display: none; margin-top: 20px; font-weight: bold; color: #d63384; }
+        .btn-edit { position: absolute; top: 10px; right: 10px; background: #ffc107; color: black; padding: 5px 10px; font-size: 12px; border-radius: 5px; opacity: 0.3; }
+        .btn-edit:hover { opacity: 1; }
+        #save-btn { display: none; background: #28a745; color: white; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Happy Anniversary! ❤️</h1>
-        <p>To my favorite person,</p>
+        <button class="btn-edit" onclick="enableEdit()">Edit Content ⚙️</button>
+        
+        <h1 id="main-title" contenteditable="false">Happy Anniversary! ❤️</h1>
+        <p id="sub-text" contenteditable="false">To my favorite person, I love you more every day.</p>
         
         <div class="photo-placeholder">
-            <img src="our-photo.jpg" alt="Us">
+            <p style="font-size: 0.8rem;">[Upload 'us.jpg' to GitHub to see your photo here]</p>
         </div>
 
-        <p>I am so lucky to have you. Ready for our anniversary date?</p>
-
-        <div class="buttons">
-            <button class="btn-yes" onclick="showLove()">YES! 🌹</button>
-            <button class="btn-no" onmouseover="moveButton(this)">No 🏃‍♂️</button>
+        <div class="buttons" id="btn-group">
+            <button class="btn-yes" onclick="alert('Yay! I love you! ❤️')">YES! 🌹</button>
         </div>
 
-        <div id="message">
-            Yay! I'll see you later! I love you so much! ✨
-        </div>
+        <button id="save-btn" onclick="saveContent()">Save Changes ✅</button>
     </div>
 
     <script>
-        function showLove() {
-            document.getElementById('message').style.display = 'block';
-            document.querySelector('.buttons').style.display = 'none';
+        // Load saved content from your browser's memory
+        window.onload = function() {
+            if(localStorage.getItem('anniversaryTitle')) {
+                document.getElementById('main-title').innerText = localStorage.getItem('anniversaryTitle');
+                document.getElementById('sub-text').innerText = localStorage.getItem('anniversaryText');
+            }
         }
 
-        // This makes the "No" button run away when he tries to click it!
-        function moveButton(btn) {
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.position = 'absolute';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+        function enableEdit() {
+            document.getElementById('main-title').contentEditable = "true";
+            document.getElementById('sub-text').contentEditable = "true";
+            document.getElementById('main-title').style.border = "1px solid #ffc107";
+            document.getElementById('sub-text').style.border = "1px solid #ffc107";
+            document.getElementById('save-btn').style.display = "inline-block";
+            alert("You can now click on the text to type your own message!");
+        }
+
+        function saveContent() {
+            const title = document.getElementById('main-title').innerText;
+            const text = document.getElementById('sub-text').innerText;
+            localStorage.setItem('anniversaryTitle', title);
+            localStorage.setItem('anniversaryText', text);
+            
+            document.getElementById('main-title').contentEditable = "false";
+            document.getElementById('sub-text').contentEditable = "false";
+            document.getElementById('main-title').style.border = "none";
+            document.getElementById('sub-text').style.border = "none";
+            document.getElementById('save-btn').style.display = "none";
+            alert("Saved to this browser! (Note: Only YOU see these changes unless you update the code in GitHub).");
         }
     </script>
 
